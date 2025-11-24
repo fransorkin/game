@@ -1,0 +1,46 @@
+body {
+    margin: 0;
+    background: #111;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+
+#board {
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+    position: relative;
+    overflow: hidden;
+    border: 6px solid #333;
+}
+
+/* PLAYER: CUADRADO AZUL PEQUEÑO */
+#player {
+    width: 35px;           /* pequeño y fijo en píxeles */
+    height: 35px;          /* cuadrado perfecto */
+    background: #3498db;   /* azul bonito */
+    position: absolute;
+    left: 80px;            /* fijo en la izquierda */
+    bottom: 50px;          /* altura base */
+    border: 3px solid #2980b9;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.6);
+    z-index: 10;
+}
+
+/* OBSTÁCULOS: CUADRADOS VERDES MUY PEQUEÑOS */
+.obstacle {
+    width: 30px;           /* muy pequeños */
+    height: 30px;          /* cuadrados perfectos */
+    background: #2ecc71;   /* verde esmeralda */
+    position: absolute;
+    border: 3px solid #27ae60;
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.6);
+    z-index: 5;
+}
+
+/* Efecto opcional al saltar (queda muy bien) */
+#player.jumping {
+    transform: translateY(-10px) scale(1.1);
+    box-shadow: 0 15px 25px rgba(52, 152, 219, 0.8);
+}
+
