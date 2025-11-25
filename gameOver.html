@@ -1,33 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Game Over</title>
-    <style>
-        body { 
-            margin: 0; height: 100vh; 
-            background: linear-gradient(135deg, #ff6b6b, #ee5a52); 
-            display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
-            font-family: 'Courier New', monospace; color: white; text-align: center; 
-        }
-        h1 { font-size: 4em; text-shadow: 0 0 20px #ff4757; }
-        #final-score { font-size: 2em; margin: 20px; color: #f39c12; }
-        button { 
-            padding: 20px 50px; font-size: 1.5em; 
-            background: linear-gradient(#00ffff, #0099cc); 
-            color: white; border: none; border-radius: 20px; 
-            cursor: pointer; box-shadow: 0 10px 30px rgba(0,255,255,0.5); 
-            transition: all 0.3s; 
-        }
-        button:hover { transform: scale(1.1); box-shadow: 0 15px 40px rgba(0,255,255,0.8); }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAME OVER • Dino Jump ∞</title>
+    <link rel="stylesheet" href="./gameOver.css">
 </head>
 <body>
-    <h1>GAME OVER</h1>
-    <div id="final-score">Score Final: <span id="score">0</span></div>
-    <button onclick="location.href='index.html'">Jugar de Nuevo</button>
+
+    <div class="container">
+        <h1 class="glitch" data-text="GAME OVER">GAME OVER</h1>
+        
+        <div class="score-container">
+            <p class="label">SCORE FINAL</p>
+            <div class="score" id="final-score">0000</div>
+        </div>
+
+        <div class="best-container">
+            <p class="label">MEJOR PUNTUACIÓN</p>
+            <div class="best" id="best-score">0000</div>
+        </div>
+
+        <button class="restart-btn" onclick="location.href='index.html'">
+            <span>REINICIAR</span>
+            <div class="glow"></div>
+        </button>
+
+        <div class="particles"></div>
+    </div>
+
     <script>
-        document.getElementById('score').textContent = localStorage.getItem('score') || 0;
+     
+        const finalScore = localStorage.getItem('finalScore') || 0;
+        const highscore = localStorage.getItem('highscore') || 0;
+
+        document.getElementById('final-score').textContent = finalScore.padStart(4, '0');
+        document.getElementById('best-score').textContent = highscore.padStart(4, '0');
+
+        
+        const particles = document.querySelector('.particles');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = Math.random() * 100 + 'vh';
+            p.style.animationDelay = Math.random() * 20 + 's';
+            p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+            particles.appendChild(p);
+        }
     </script>
 </body>
 </html>

@@ -3,21 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GeoDash Simple</title>
+    <title>Dino Jump ∞</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+
     <div id="board">
+        
+        
+        <div id="ground"></div>
+        <div id="ground"></div>
 
-        <div id="ui">
-            <div id="score">Score: <span id="score-value">0</span></div>
-            <div id="highscore">Best: <span id="highscore-value">0</span></div>
-        </div>
-
-
+        
         <div id="player"></div>
 
-        <div id="ground"></div>
+       
+        <div id="ui">
+            <div id="highscore">BEST: <span id="highscore-value">0</span></div>
+            <div id="score">SCORE: <span id="score-value">0</span></div>
+        </div>
+
+        
+        <div id="start-screen">
+            <div class="start-container">
+                <h1 class="title">DINO JUMP</h1>
+                <div class="subtitle">∞ NEON RUNNER ∞</div>
+                <p class="instructions">
+                    Pulsa <kbd>ESPACIO</kbd> • Haz <kbd>CLIC</kbd> • o <kbd>TOQUE</kbd> para saltar<br>
+                    Doble salto permitido
+                </p>
+                <button class="start-btn" onclick="startGame()">
+                    <span>PLAY</span>
+                </button>
+                <div class="glow-line"></div>
+            </div>
+        </div>
+
     </div>
 
     <script src="./main.js"></script>

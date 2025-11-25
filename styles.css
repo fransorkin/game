@@ -8,6 +8,7 @@ body {
     overflow: hidden;
     background: linear-gradient(180deg, #0f0f23 0%, #1a1a3e 50%, #2d2d5c 100%);
     font-family: 'Courier New', monospace;
+    height: 100vh;
 }
 
 #board {
@@ -15,92 +16,99 @@ body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
+    background: #0a0a1a;
 }
 
+/* === UI === */
 #ui {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 25px;
+    left: 25px;
     z-index: 100;
     color: #fff;
-    font-size: 1.5em;
-    text-shadow: 0 0 10px #00ffff;
-}
-
-#score, #highscore {
-    margin-bottom: 10px;
+    font-size: 1.6em;
+    text-shadow: 0 0 15px #00ffff;
+    line-height: 1.4;
 }
 
 #score-value, #highscore-value {
     color: #00ffff;
     font-weight: bold;
-    text-shadow: 0 0 15px #00ffff;
+    text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+    font-size: 1.1em;
 }
 
-
+/* === Jugador === */
 #player {
     position: absolute;
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     background: linear-gradient(45deg, #00ffff, #0099cc);
-    border-radius: 8px;
+    border-radius: 12px;
     left: 100px;
     bottom: 100px;
     box-shadow: 
-        0 0 20px #00ffff,
-        inset 0 0 10px rgba(255,255,255,0.3);
+        0 0 25px #00ffff,
+        inset 0 0 15px rgba(255,255,255,0.4);
     z-index: 50;
-    transition: all 0.1s ease;
+    transition: all 0.15s ease;
+    border: 2px solid #00ffff;
 }
 
 #player.jump {
-    transform: translateY(-25px) scale(1.2);
+    transform: translateY(-30px) scale(1.15) rotate(-5deg);
     box-shadow: 
-        0 0 40px #00ffff,
-        0 20px 40px rgba(0,255,255,0.4);
+        0 0 50px #00ffff,
+        0 25px 50px rgba(0, 255, 255, 0.5);
+    filter: brightness(1.4);
 }
 
-
+/* === Pinchos === */
 .spike {
     position: absolute;
     width: 0;
     height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-bottom: 40px solid #ff4757;
-    box-shadow: 0 0 15px #ff4757;
+    border-left: 22px solid transparent;
+    border-right: 22px solid transparent;
+    border-bottom: 50px solid #ff4757;
+    box-shadow: 0 0 20px #ff4757;
     z-index: 20;
+    bottom: 100px;
 }
 
 .spike::before {
     content: '';
     position: absolute;
-    top: 2px;
-    left: -18px;
-    width: 36px;
-    height: 36px;
-    background: linear-gradient(#ff4757, #ff3838);
+    top: 5px;
+    left: -20px;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(#ff4757, #ff1e56);
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
-
+/* === Suelo infinito === */
 #ground {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 300vw;  
+    width: 300vw;
     height: 100px;
     background: linear-gradient(#ff9f43, #ff6b35);
-    animation: scroll 0.5s linear infinite;
+    animation: scroll 1.8s linear infinite;
     z-index: 10;
+}
+
+#ground:nth-child(2) {
+    left: 300vw;
 }
 
 @keyframes scroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-100vw); }
+    100% { transform: translateX(-300vw); }
 }
 
-
+/* === Partículas (opcional, si las usas después) === */
 .particle {
     position: absolute;
     width: 6px;
@@ -109,4 +117,120 @@ body {
     border-radius: 50%;
     pointer-events: none;
     z-index: 60;
+    box-shadow: 0 0 15px #00ffff;
+}
+
+/* === PANTALLA DE INICIO - LA MÁS GUAPA === */
+#start-screen {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 30, 0.97);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    backdrop-filter: blur(8px);
+}
+
+.start-container {
+    text-align: center;
+    padding: 40px;
+    border: 2px solid #00ffff;
+    border-radius: 20px;
+    background: rgba(0, 20, 40, 0.6);
+    box-shadow: 
+        0 0 50px rgba(0, 255, 255, 0.4),
+        inset 0 0 30px rgba(0, 255, 255, 0.1);
+    animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+.title {
+    font-size: 9vw;
+    font-weight: bold;
+    background: linear-gradient(90deg, #00ffff, #0099ff, #00ffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 40px #00ffff;
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 2.5vw;
+    color: #00ffff;
+    text-shadow: 0 0 20px #00ffff;
+    margin-bottom: 30px;
+    letter-spacing: 6px;
+}
+
+.instructions {
+    font-size: 1.8vw;
+    color: #a0f7ff;
+    margin: 25px 0;
+    line-height: 1.6;
+}
+
+.instructions kbd {
+    background: #00ffff;
+    color: #000;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    box-shadow: 0 0 15px #00ffff;
+}
+
+.start-btn {
+    margin-top: 40px;
+    padding: 20px 70px;
+    font-size: 3vw;
+    font-weight: bold;
+    background: linear-gradient(45deg, #00ffff, #0099cc);
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 0 40px #00ffff;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.start-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 70px #00ffff;
+}
+
+.start-btn:active {
+    transform: scale(0.98);
+}
+
+.start-btn span {
+    position: relative;
+    z-index: 2;
+}
+
+.glow-line {
+    margin-top: 40px;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #00ffff, transparent);
+    box-shadow: 0 0 20px #00ffff;
+    animation: pulseLine 3s infinite;
+}
+
+@keyframes pulseLine {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .title { font-size: 14vw; }
+    .subtitle { font-size: 5vw; }
+    .instructions { font-size: 4.5vw; }
+    .start-btn { font-size: 7vw; padding: 18px 50px; }
 }

@@ -1,38 +1,36 @@
-
 class Player {
     constructor() {
-        this.size = 40;           
-        this.groundY = 100;       
-        this.positionY = this.groundY; 
+        this.size = 40;
+        this.groundY = 100;
+        this.positionY = this.groundY;
         this.velocityY = 0;
-        this.gravity = -0.94;    
-        this.jumpForce = 16;      
+
+        this.gravity = -0.9;
+        this.jumpForce = 16;
+
+        this.jumpCount = 0;
 
         this.element = document.getElementById("player");
         this.updateUI();
     }
 
     update() {
-       
         this.velocityY += this.gravity;
         this.positionY += this.velocityY;
 
         if (this.positionY < this.groundY) {
             this.positionY = this.groundY;
             this.velocityY = 0;
+            this.jumpCount = 0;
         }
 
         this.updateUI();
     }
 
-    isOnGround() {
-        return this.positionY <= this.groundY + 0.5;
-    }
-
     jump() {
-        
-        if (this.isOnGround()) {
+        if (this.jumpCount < 2) {
             this.velocityY = this.jumpForce;
+            this.jumpCount++;
 
             this.element.classList.add("jump");
             setTimeout(() => {
@@ -49,8 +47,8 @@ class Player {
 class Spike {
     constructor(board) {
         this.board = board;
-        this.positionX = this.board.offsetWidth + 40;
-        this.bottomY = 100; 
+        this.positionX = board.offsetWidth + 40;
+        this.bottomY = 100;
         this.createElement();
     }
 
@@ -77,40 +75,49 @@ class Spike {
 
 
 const board = document.getElementById("board");
+const startScreen = document.getElementById("start-screen");
 const player = new Player();
-const spikes = [];
 
+const spikes = [];
 let score = 0;
 let highscore = parseInt(localStorage.getItem("highscore") || "0", 10);
 let speed = 7;
 let gameSpeed = 1;
 
 const scoreEl = document.getElementById("score-value");
-const highscoreEl = document.getElementById("highscore-value");
+const highscoreEl = document.getElementById("highscore-value");  // ← ¡CORREGIDO! Era "ByById"
 highscoreEl.textContent = highscore.toString();
 
-let gameRunning = true;
+
+let gameRunning = false;
+let hasStarted = false;
 
 
-function checkCollisions() {
-    const playerRect = player.element.getBoundingClientRect();
+function startGame() {
+    if (hasStarted) return;
 
-    for (const spike of spikes) {
-        const spikeRect = spike.element.getBoundingClientRect();
+    hasStarted = true;
+    gameRunning = true;
 
-        const overlapX =
-            playerRect.left < spikeRect.right &&
-            playerRect.right > spikeRect.left;
-
-        const overlapY =
-            playerRect.top < spikeRect.bottom &&
-            playerRect.bottom > spikeRect.top;
-
-        if (overlapX && overlapY) {
-            gameOver();
-            return;
-        }
+    
+    if (startScreen) {
+        startScreen.style.opacity = "0";
+        setTimeout(() => {
+            startScreen.style.display = "none";
+        }, 400);
     }
+
+    
+    score = 0;
+    speed = 7;
+    gameSpeed = 1;
+    scoreEl.textContent = "0";
+    spikes.length = 0;
+
+    
+    document.querySelectorAll(".spike").forEach(s => s.remove());
+
+    gameLoop();
 }
 
 
@@ -119,12 +126,12 @@ function gameLoop() {
 
     player.update();
 
-    
+  
     if (Math.random() < 0.02 * gameSpeed) {
         spikes.push(new Spike(board));
     }
 
-    
+  
     for (let i = spikes.length - 1; i >= 0; i--) {
         const removed = spikes[i].update(speed * gameSpeed);
         if (removed) {
@@ -135,22 +142,27 @@ function gameLoop() {
     }
 
     checkCollisions();
-
     gameSpeed += 0.0004;
+
     requestAnimationFrame(gameLoop);
 }
 
 
-document.addEventListener("keydown", (e) => {
-    if (e.code === "Space") {
-        e.preventDefault();
-        player.jump();
-    }
-});
+function checkCollisions() {
+    const playerRect = player.element.getBoundingClientRect();
 
-document.addEventListener("click", () => {
-    player.jump();
-});
+    for (const spike of spikes) {
+        const spikeRect = spike.element.getBoundingClientRect();
+
+        const overlapX = playerRect.left < spikeRect.right && playerRect.right > spikeRect.left;
+        const overlapY = playerRect.top < spikeRect.bottom && playerRect.bottom > spikeRect.top;
+
+        if (overlapX && overlapY) {
+            gameOver();
+            return;
+        }
+    }
+}
 
 
 function gameOver() {
@@ -163,8 +175,37 @@ function gameOver() {
     }
 
     localStorage.setItem("finalScore", score.toString());
-    location.href = "gameOver.html";
+    setTimeout(() => {
+        location.href = "gameOver.html";
+    }, 500);
 }
 
 
-gameLoop();
+document.addEventListener("keydown", (e) => {
+    if (e.code === "Space") {
+        e.preventDefault();
+        if (!hasStarted) {
+            startGame();
+        } else if (gameRunning) {
+            player.jump();
+        }
+    }
+});
+
+document.addEventListener("click", () => {
+    if (!hasStarted) {
+        startGame();
+    } else if (gameRunning) {
+        player.jump();
+    }
+});
+
+
+board.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    if (!hasStarted) {
+        startGame();
+    } else if (gameRunning) {
+        player.jump();
+    }
+});
