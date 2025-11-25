@@ -3,16 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tube Runner Game</title>
+    <title>GeoDash Simple</title>
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <div id="board">
-    
-        <div id="score-display">Score: 0</div>
-        
-      
+
+        <div id="ui">
+            <div id="score">Score: <span id="score-value">0</span></div>
+            <div id="highscore">Best: <span id="highscore-value">0</span></div>
+        </div>
+
+
         <div id="player"></div>
+
+        <div id="ground"></div>
     </div>
 
     <script src="./main.js"></script>
