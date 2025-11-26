@@ -19,7 +19,7 @@ body {
     background: #0a0a1a;
 }
 
-/* === UI === */
+
 #ui {
     position: absolute;
     top: 25px;
@@ -38,7 +38,7 @@ body {
     font-size: 1.1em;
 }
 
-/* === Jugador === */
+
 #player {
     position: absolute;
     width: 50px;
@@ -63,7 +63,7 @@ body {
     filter: brightness(1.4);
 }
 
-/* === Pinchos === */
+
 .spike {
     position: absolute;
     width: 0;
@@ -87,7 +87,7 @@ body {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
-/* === Suelo infinito === */
+
 #ground {
     position: absolute;
     bottom: 0;
@@ -108,7 +108,7 @@ body {
     100% { transform: translateX(-300vw); }
 }
 
-/* === Partículas (opcional, si las usas después) === */
+
 .particle {
     position: absolute;
     width: 6px;
@@ -120,7 +120,7 @@ body {
     box-shadow: 0 0 15px #00ffff;
 }
 
-/* === PANTALLA DE INICIO - LA MÁS GUAPA === */
+
 #start-screen {
     position: absolute;
     inset: 0;
@@ -227,10 +227,26 @@ body {
     50% { opacity: 1; }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .title { font-size: 14vw; }
     .subtitle { font-size: 5vw; }
     .instructions { font-size: 4.5vw; }
     .start-btn { font-size: 7vw; padding: 18px 50px; }
 }
+
+
+.wall-block {
+    position: absolute;
+    width: 44px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff4757, #ff1e56);
+    border: 3px solid #c4453c;
+    border-radius: 8px;
+    box-shadow: 
+        0 0 30px #ff4757,
+        0 0 50px rgba(255, 71, 87, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    z-index: 20;
+    image-rendering: pixelated; 
+}
+
