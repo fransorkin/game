@@ -66,7 +66,8 @@ class Wall {
         this.createWall();
     }
     createWall() {
-        for (let i = 0; i < 2; i++) {
+        
+        for (let i = 0; i < 3; i++) {
             const block = document.createElement("div");
             block.className = "wall-block";
             block.style.left = this.positionX + "px";
@@ -86,12 +87,40 @@ class Wall {
     }
 }
 
+
+class Hole {
+    constructor(board) {
+        this.board = board;
+        this.positionX = board.offsetWidth + 100;
+        this.createElement();
+    }
+    createElement() {
+        const h = document.createElement("div");
+        h.className = "hole";
+        h.style.left = this.positionX + "px";
+        h.style.bottom = "100px"; 
+        this.board.appendChild(h);
+        this.element = h;
+    }
+    update(speed) {
+        this.positionX -= speed;
+        this.element.style.left = this.positionX + "px";
+        if (this.positionX < -200) {
+            this.element.remove();
+            return true;
+        }
+        return false;
+    }
+}
+
 const board = document.getElementById("board");
 const startScreen = document.getElementById("start-screen");
 const player = new Player();
 
 const spikes = [];
 const walls = [];
+const holes = []; 
+
 let score = 0;
 let highscore = parseInt(localStorage.getItem("highscore") || "0", 10);
 let speed = 7;
@@ -104,7 +133,8 @@ highscoreEl.textContent = highscore.toString();
 let gameRunning = false;
 let hasStarted = false;
 let lastWallTime = 0;
-let consecutiveSpikes = 0;  
+let lastHoleTime = 0; 
+let consecutiveSpikes = 0;
 
 function startGame() {
     if (hasStarted) return;
@@ -120,12 +150,18 @@ function startGame() {
     speed = 7;
     gameSpeed = 1;
     scoreEl.textContent = "0";
+
     spikes.length = 0;
     walls.length = 0;
+    holes.length = 0;
     consecutiveSpikes = 0;
-    document.querySelectorAll(".spike, .wall-block").forEach(el => el.remove());
+
+    document
+        .querySelectorAll(".spike, .wall-block, .hole")
+        .forEach(el => el.remove());
 
     lastWallTime = Date.now();
+    lastHoleTime = Date.now();
     gameLoop();
 }
 
@@ -136,11 +172,10 @@ function gameLoop() {
 
     const now = Date.now();
 
-    const shouldSpawnWall = (now - lastWallTime > 2800 + Math.random() * 400); 
+    const shouldSpawnWall = (now - lastWallTime > 2800 + Math.random() * 400);
     const canSpawnSpike = consecutiveSpikes < 2;
 
     if (shouldSpawnWall && consecutiveSpikes < 2) {
-       
         walls.push(new Wall(board));
         lastWallTime = now;
         consecutiveSpikes = 0;
@@ -148,13 +183,18 @@ function gameLoop() {
         spikes.push(new Spike(board));
         consecutiveSpikes++;
     } else if (shouldSpawnWall) {
-        
         walls.push(new Wall(board));
         lastWallTime = now;
         consecutiveSpikes = 0;
     }
 
-   
+    
+    if (now - lastHoleTime > 10000) {
+        holes.push(new Hole(board));
+        lastHoleTime = now;
+    }
+
+    
     for (let i = spikes.length - 1; i >= 0; i--) {
         if (spikes[i].update(speed * gameSpeed)) {
             spikes.splice(i, 1);
@@ -172,6 +212,13 @@ function gameLoop() {
         }
     }
 
+    
+    for (let i = holes.length - 1; i >= 0; i--) {
+        if (holes[i].update(speed * gameSpeed)) {
+            holes.splice(i, 1);
+        }
+    }
+
     checkCollisions();
     gameSpeed += 0.0004;
     requestAnimationFrame(gameLoop);
@@ -180,6 +227,7 @@ function gameLoop() {
 function checkCollisions() {
     const p = player.element.getBoundingClientRect();
 
+    
     for (const s of spikes) {
         const r = s.element.getBoundingClientRect();
         if (p.right > r.left && p.left < r.right && p.bottom > r.top && p.top < r.bottom) {
@@ -187,12 +235,25 @@ function checkCollisions() {
         }
     }
 
+    
     for (const w of walls) {
         for (const b of w.elements) {
             const r = b.getBoundingClientRect();
             if (p.right > r.left && p.left < r.right && p.bottom > r.top && p.top < r.bottom) {
                 gameOver();
             }
+        }
+    }
+
+    
+    for (const h of holes) {
+        const r = h.element.getBoundingClientRect();
+
+        const overlapX = p.right > r.left && p.left < r.right;
+        const isOnGround = player.positionY <= player.groundY + 1;
+
+        if (overlapX && isOnGround) {
+            gameOver();
         }
     }
 }
