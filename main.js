@@ -16,12 +16,12 @@ class Player {
         if (this.positionY < this.groundY) {
             this.positionY = this.groundY;
             this.velocityY = 0;
-            this.jumpCount = 0; // Permite triple salto al tocar suelo
+            this.jumpCount = 0; 
         }
         this.updateUI();
     }
     jump() {
-        if (this.jumpCount < 3) { // TRIPLE SALTO
+        if (this.jumpCount < 3) { 
             this.velocityY = this.jumpForce;
             this.jumpCount++;
             this.element.classList.add("jump");
@@ -66,7 +66,7 @@ class Wall {
         this.createWall();
     }
     createWall() {
-        for (let i = 0; i < 3; i++) { // MURO DE 4 BLOQUES
+        for (let i = 0; i < 3; i++) { 
             const block = document.createElement("div");
             block.className = "wall-block";
             block.style.left = this.positionX + "px";
@@ -86,7 +86,7 @@ class Wall {
     }
 }
 
-// NUEVO OBSTÁCULO: 3 púas juntas en el suelo (reemplaza al hole feo)
+
 class SpikeCluster {
     constructor(board) {
         this.board = board;
@@ -123,7 +123,7 @@ const player = new Player();
 
 const spikes = [];
 const walls = [];
-const clusters = []; // Reemplaza holes
+const clusters = []; 
 
 let score = 0;
 let highscore = parseInt(localStorage.getItem("highscore") || "0", 10);
@@ -186,13 +186,13 @@ function gameLoop() {
         consecutiveSpikes++;
     }
 
-    // Spawnea el nuevo obstáculo cada ~12 segundos
+    
     if (now - lastClusterTime > 12000) {
         clusters.push(new SpikeCluster(board));
         lastClusterTime = now;
     }
 
-    // Actualizar spikes
+    
     for (let i = spikes.length - 1; i >= 0; i--) {
         if (spikes[i].update(speed * gameSpeed)) {
             spikes.splice(i, 1);
@@ -201,7 +201,7 @@ function gameLoop() {
         }
     }
 
-    // Actualizar muros
+    
     for (let i = walls.length - 1; i >= 0; i--) {
         if (walls[i].update(speed * gameSpeed)) {
             walls.splice(i, 1);
@@ -210,11 +210,11 @@ function gameLoop() {
         }
     }
 
-    // Actualizar clusters (3 púas)
+    
     for (let i = clusters.length - 1; i >= 0; i--) {
         if (clusters[i].update(speed * gameSpeed)) {
             clusters.splice(i, 1);
-            score += 25; // Más puntos por obstáculo difícil
+            score += 25; 
             scoreEl.textContent = score.toString();
         }
     }
@@ -227,7 +227,7 @@ function gameLoop() {
 function checkCollisions() {
     const p = player.element.getBoundingClientRect();
 
-    // Colisión con púas individuales
+    
     for (const s of spikes) {
         const r = s.element.getBoundingClientRect();
         if (p.right > r.left && p.left < r.right && p.bottom > r.top && p.top < r.bottom) {
@@ -235,7 +235,7 @@ function checkCollisions() {
         }
     }
 
-    // Colisión con muros
+    
     for (const w of walls) {
         for (const b of w.elements) {
             const r = b.getBoundingClientRect();
@@ -245,7 +245,7 @@ function checkCollisions() {
         }
     }
 
-    // Colisión con cluster de púas
+
     for (const c of clusters) {
         for (const s of c.elements) {
             const r = s.getBoundingClientRect();
@@ -267,7 +267,7 @@ function gameOver() {
     setTimeout(() => location.href = "gameOver.html", 500);
 }
 
-// Controles
+
 document.addEventListener("keydown", e => {
     if (e.code === "Space") {
         e.preventDefault();

@@ -115,7 +115,7 @@ body {
     100% { transform: translateX(-300vw); }
 }
 
-/* Pantalla de inicio */
+
 #start-screen {
     position: absolute;
     inset: 0;
