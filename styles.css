@@ -19,7 +19,6 @@ body {
     background: #0a0a1a;
 }
 
-
 #ui {
     position: absolute;
     top: 25px;
@@ -38,7 +37,6 @@ body {
     font-size: 1.1em;
 }
 
-
 #player {
     position: absolute;
     width: 50px;
@@ -47,22 +45,17 @@ body {
     border-radius: 12px;
     left: 100px;
     bottom: 100px;
-    box-shadow: 
-        0 0 25px #00ffff,
-        inset 0 0 15px rgba(255,255,255,0.4);
+    box-shadow: 0 0 25px #00ffff, inset 0 0 15px rgba(255,255,255,0.4);
+    border: 2px solid #00ffff;
     z-index: 50;
     transition: all 0.15s ease;
-    border: 2px solid #00ffff;
 }
 
 #player.jump {
     transform: translateY(-30px) scale(1.15) rotate(-5deg);
-    box-shadow: 
-        0 0 50px #00ffff,
-        0 25px 50px rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 50px #00ffff, 0 25px 50px rgba(0, 255, 255, 0.5);
     filter: brightness(1.4);
 }
-
 
 .spike {
     position: absolute;
@@ -87,6 +80,20 @@ body {
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
+.wall-block {
+    position: absolute;
+    width: 44px;
+    height: 50px;
+    background: linear-gradient(135deg, #ff4757, #ff1e56);
+    border: 3px solid #c4453c;
+    border-radius: 8px;
+    box-shadow: 
+        0 0 30px #ff4757,
+        0 0 50px rgba(255, 71, 87, 0.6),
+        inset 0 0 20px rgba(255, 255, 255, 0.2);
+    z-index: 20;
+    image-rendering: pixelated;
+}
 
 #ground {
     position: absolute;
@@ -104,23 +111,11 @@ body {
 }
 
 @keyframes scroll {
-    0% { transform: translateX(0); }
+    0%   { transform: translateX(0); }
     100% { transform: translateX(-300vw); }
 }
 
-
-.particle {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    background: #00ffff;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 60;
-    box-shadow: 0 0 15px #00ffff;
-}
-
-
+/* Pantalla de inicio */
 #start-screen {
     position: absolute;
     inset: 0;
@@ -138,15 +133,13 @@ body {
     border: 2px solid #00ffff;
     border-radius: 20px;
     background: rgba(0, 20, 40, 0.6);
-    box-shadow: 
-        0 0 50px rgba(0, 255, 255, 0.4),
-        inset 0 0 30px rgba(0, 255, 255, 0.1);
+    box-shadow: 0 0 50px rgba(0, 255, 255, 0.4), inset 0 0 0 30px rgba(0, 255, 255, 0.1);
     animation: float 6s ease-in-out infinite;
 }
 
 @keyframes float {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-20px); }
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-20px); }
 }
 
 .title {
@@ -196,8 +189,6 @@ body {
     cursor: pointer;
     box-shadow: 0 0 40px #00ffff;
     transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
 }
 
 .start-btn:hover {
@@ -207,11 +198,6 @@ body {
 
 .start-btn:active {
     transform: scale(0.98);
-}
-
-.start-btn span {
-    position: relative;
-    z-index: 2;
 }
 
 .glow-line {
@@ -224,94 +210,12 @@ body {
 
 @keyframes pulseLine {
     0%, 100% { opacity: 0.4; }
-    50% { opacity: 1; }
+    50%      { opacity: 1; }
 }
 
 @media (max-width: 768px) {
-    .title { font-size: 14vw; }
-    .subtitle { font-size: 5vw; }
+    .title       { font-size: 14vw; }
+    .subtitle    { font-size: 5vw; }
     .instructions { font-size: 4.5vw; }
-    .start-btn { font-size: 7vw; padding: 18px 50px; }
+    .start-btn   { font-size: 7vw; padding: 18px 50px; }
 }
-
-
-.wall-block {
-    position: absolute;
-    width: 44px;
-    height: 50px;
-    background: linear-gradient(135deg, #ff4757, #ff1e56);
-    border: 3px solid #c4453c;
-    border-radius: 8px;
-    box-shadow: 
-        0 0 30px #ff4757,
-        0 0 50px rgba(255, 71, 87, 0.6),
-        inset 0 0 20px rgba(255, 255, 255, 0.2);
-    z-index: 20;
-    image-rendering: pixelated; 
-}
-
-.hole {
-    position: absolute;
-    width: 104px;          
-    height: 22px;
-    background: linear-gradient(
-        to bottom,
-        #111 0%,
-        #000 40%,
-        #000 100%
-    );
-    border-radius: 0 0 12px 12px;
-    box-shadow:
-        inset 0 8px 12px rgba(0, 0, 0, 0.9),
-        0 6px 10px rgba(0, 0, 0, 0.6);
-    overflow: hidden;
-}
-
-
-.hole::before {
-    content: "";
-    position: absolute;
-    top: -6px;
-    left: 0;
-    width: 100%;
-    height: 6px;
-    background: repeating-linear-gradient(
-        90deg,
-        #3a2a1a 0px,
-        #3a2a1a 10px,
-        #2b1c12 10px,
-        #2b1c12 20px
-    );
-    box-shadow: 0 2px 4px rgba(0,0,0,0.8);
-}
-
-
-.hole::after {
-    content: "";
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    width: 160%;
-    height: 60px;
-    transform: translateX(-50%);
-    background: radial-gradient(
-        ellipse at center,
-        rgba(0,0,0,0.9) 0%,
-        rgba(0,0,0,0) 70%
-    );
-}
-.hole {
-    animation: holeOpen 0.25s ease-out;
-}
-
-@keyframes holeOpen {
-    from {
-        transform: scaleY(0.2);
-        opacity: 0;
-    }
-    to {
-        transform: scaleY(1);
-        opacity: 1;
-    }
-}
-
